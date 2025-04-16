@@ -6,6 +6,7 @@ import {
   updateUser,
   deleteUser,
   getUserByEmail,
+  getUsersByScore,
 } from '../controllers/userController';
 
 const router: Router = Router();
@@ -27,5 +28,7 @@ router.delete('/DeleteUser/:id', deleteUser);
 
 // Получение пользователя по email
 router.get('/GetUserByEmail/:email', getUserByEmail);
+// Получение пользователей по рейтингу
+router.get('/GetUsersByScore', getUsersByScore);
 
 export default router;

@@ -1,32 +1,37 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document } from "mongoose";
 
 export interface IClan extends Document {
   name: string;
   description: string;
-  members: Schema.Types.ObjectId[]; // ссылки на пользователей
+  members: Schema.Types.ObjectId[];
+  image: string; // ✅ имя файла
+  type: "open" | "closed"; // ✅ нижний регистр
+  level: number;
 }
 
 const ClanSchema = new Schema<IClan>(
   {
     name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
+    image: { type: String, required: true },
+    type: { type: String, enum: ["open", "closed"], required: true },
+    level: { type: Number, default: 1 },
     members: {
       type: [Schema.Types.ObjectId],
-      ref: 'User',
+      ref: "User",
       default: [],
       validate: {
-        validator: function(members: any[]) {
-          return members.length <= 20;
+        validator: function (members: any[]) {
+          return members.length <= 50;
         },
-        message: 'Клан не может содержать более 20 участников.'
-      }
-    }
+        message: "Клан не может содержать более 50 участников.",
+      },
+    },
   },
   {
-    collection: 'clans',
+    collection: "clans",
     timestamps: true,
   }
 );
 
-const ClanModel = model<IClan>('Clan', ClanSchema);
-export default ClanModel;
+export default model<IClan>("Clan", ClanSchema);

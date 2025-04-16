@@ -17,7 +17,15 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     res.status(500).json({ message: 'Ошибка при создании пользователя', error });
   }
 };
-
+// Получение пользователей по рейтингу (score)
+export const getUsersByScore = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const users = await UserModel.find().sort({ raiting: -1 });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка при получении пользователей по score', error });
+  }
+};
 // Получение пользователя по email
 export const getUserByEmail = async (req: Request, res: Response): Promise<void> => {
     try {
